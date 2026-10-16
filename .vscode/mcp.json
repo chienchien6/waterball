@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "wsa-course": {
+      "url": "https://world.waterballsa.tw/api/mcp",
+      "headers": { "Authorization": "Bearer wsa_mcp_fKfqzqUScyDxdk76lzF9VfeyMr2W8EXSNjRV-3JMODA" }
+    }
+  }
+}
