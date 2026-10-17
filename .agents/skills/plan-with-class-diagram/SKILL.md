@@ -13,9 +13,8 @@ description: "Use when planning code changes with a Mermaid class diagram before
 
 ## Phase 2 —— 產出類別圖提案
 
-1. WRITE 產出 Mermaid `classDiagram`，呈現類別名稱、關鍵屬性/方法、類別間關係。
-2. WRITE 簡短說明各類別職責與設計意圖。
-3. WRITE 詢問用戶是否同意此設計並進入開發；未確認前停止，不寫程式。
+1. WRITE 產出類別圖提案時，先讀取 `templates/class-diagram-proposal.md` 與 `templates/class-diagram-proposal.example.md`，依骨架複製 Markdown 結構、參考範例填入 Mermaid 類別圖及設計說明，並寫入 `specs/plan/<NN>-<本次計劃名稱>/class-diagram-proposal.md`；`NN` 為既有最大序號加一並補零至兩位數，沒有既有計劃時使用 `01`，不覆寫既有提案。
+2. WRITE 詢問用戶是否同意此設計並進入開發；未確認前停止，不寫程式。
 
 ## Phase 3 —— 依圖施工
 
