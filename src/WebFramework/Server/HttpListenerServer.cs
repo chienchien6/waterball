@@ -88,21 +88,21 @@ namespace WebFramework.Server
                 };
 
                 // 填入 Headers
-                foreach (string key in rawContext.Request.Headers.AllKeys)
+                foreach (string? key in rawContext.Request.Headers.AllKeys)
                 {
-                    if (key != null)
+                    if (key != null && rawContext.Request.Headers[key] is string headerVal)
                     {
-                        request.Headers[key] = rawContext.Request.Headers[key];
+                        request.Headers[key] = headerVal;
                     }
                 }
 
                 // 填入 Query 參數
                 var queryString = rawContext.Request.QueryString;
-                foreach (string key in queryString.AllKeys)
+                foreach (string? key in queryString.AllKeys)
                 {
-                    if (key != null)
+                    if (key != null && queryString[key] is string queryVal)
                     {
-                        request.Query[key] = queryString[key];
+                        request.Query[key] = queryVal;
                     }
                 }
 

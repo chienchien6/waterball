@@ -1,0 +1,12 @@
+# .NET build outputs
+[Bb]in/
+[Oo]bj/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.venv/
+
+# macOS
+.DS_Store
+
