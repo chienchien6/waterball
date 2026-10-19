@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using WebFramework.DependencyInjection;
 
 namespace WebFramework.Http
 {
@@ -11,6 +11,7 @@ namespace WebFramework.Http
         public HttpRequest Request { get; }
         public HttpResponse Response { get; }
         public IDictionary<string, object> Items { get; }
+        public IServiceProvider? RequestServices { get; set; }
 
         public HttpContext()
         {
@@ -21,8 +22,8 @@ namespace WebFramework.Http
 
         public HttpContext(HttpRequest request, HttpResponse response)
         {
-            Request = request ?? throw new ArgumentNullException(nameof(request));
-            Response = response ?? throw new ArgumentNullException(nameof(response));
+            Request = request ?? throw new System.ArgumentNullException(nameof(request));
+            Response = response ?? throw new System.ArgumentNullException(nameof(response));
             Items = new Dictionary<string, object>();
         }
     }
