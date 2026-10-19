@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "USurbjNeD/E=",
+  "success": true,
+  "projectFilePath": "/Users/chienchien/waterball/src/WebFramework/WebFramework.csproj",
+  "expectedPackageFiles": [
+    "/tmp/dotnet-home/.nuget/packages/microsoft.netcore.app.ref/8.0.32/microsoft.netcore.app.ref.8.0.32.nupkg.sha512",
+    "/tmp/dotnet-home/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.32/microsoft.aspnetcore.app.ref.8.0.32.nupkg.sha512"
+  ],
+  "logs": []
+}

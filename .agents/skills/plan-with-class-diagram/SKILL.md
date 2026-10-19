@@ -8,8 +8,9 @@ description: "Use when planning code changes with a Mermaid class diagram before
 
 ## Phase 1 —— 理解需求與現有結構
 
-1. READ 讀取用戶需求、相關程式碼、專案慣例與既種類別。
-2. THINK 拆解待開發功能，收斂主要類別、介面及其關係；需要判斷類別範圍、職責、關係語意或依賴順序時，READ `rules/類別圖設計判準.md`，再依已載入判準完成設計。
+1. DELEGATE 若目標為既有 C# 專案，需要先掌握既有類別架構，依用戶需求選定入口類別，執行 `uv run scripts/csharp_class_graph.py --root <專案根目錄> --entry <入口類別> --max-classes 30` 取得上限內專案類別的 JSON metadata（`classes` 的成員簽章與檔案位置、`relations` 的類別關係；BCL 與外部套件型別另列於 `externalReferences`，不佔名額），作為後續挑選閱讀範圍的抽象地圖；若 `truncated` 中有與需求相關的類別，改以該類別為入口再執行一次。依賴已宣告於 script 檔頭，僅在 `uv` 不可用時改用 `python -m pip install --requirements-from-script scripts/csharp_class_graph.py` 後執行 `python scripts/csharp_class_graph.py ...`。
+2. READ 讀取用戶需求與專案慣例，並依上一步 metadata 的關係與檔案位置，挑選與需求相關的類別深入閱讀原始碼；非 C# 專案或無既有程式碼時，直接讀取相關程式碼與既有類別。
+3. THINK 拆解待開發功能，收斂主要類別、介面及其關係；需要判斷類別範圍、職責、關係語意或依賴順序時，READ `rules/類別圖設計判準.md`，再依已載入判準完成設計。
 
 ## Phase 2 —— 產出類別圖提案
 
