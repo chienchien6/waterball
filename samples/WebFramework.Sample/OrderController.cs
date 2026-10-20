@@ -2,14 +2,17 @@ using System;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using WebFramework.Filters;
 using WebFramework.Http;
 using WebFramework.Routing;
 
 namespace WebFramework.Sample
 {
     /// <summary>
-    /// 訂單控制器（Controller 層），由 IoC 容器自動解析並注入 IOrderService（進而自動注入 IOrderRepository）。
+    /// 訂單控制器（Controller 層），由 IoC 容器自動解析並注入 IOrderService（進而自動注入 IOrderRepository），
+    /// 並掛上 [HttpLogging] 裝飾器屬性，在每次進入的 HTTP Request 與輸出的 HTTP Response 自動寫入日誌。
     /// </summary>
+    [HttpLogging]
     [Route("/orders")]
     public class OrderController
     {

@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using WebFramework.DependencyInjection;
+using WebFramework.Filters;
 using WebFramework.Http;
+using WebFramework.Logging;
 using WebFramework.Middleware;
 using WebFramework.Routing;
 using WebFramework.Server;
@@ -35,6 +38,7 @@ namespace WebFramework.Core
         public WebApplication(IRouter? router = null, IHttpServer? server = null, IServiceCollection? services = null)
         {
             Services = services ?? new ServiceCollection();
+            Services.AddSingleton<IHttpLogger, ConsoleHttpLogger>();
             _router = router ?? new Router();
             _server = server;
         }
@@ -135,10 +139,18 @@ namespace WebFramework.Core
 
             var classRoute = controllerType.GetCustomAttribute<RouteAttribute>(true);
             var prefix = classRoute != null ? classRoute.Template.TrimEnd('/') : string.Empty;
+            var classFilters = controllerType.GetCustomAttributes(true).OfType<IActionFilter>().ToList();
 
             var methods = controllerType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             foreach (var method in methods)
             {
+                var methodFilters = method.GetCustomAttributes(true).OfType<IActionFilter>().ToList();
+                var actionFilters = classFilters
+                    .Concat(methodFilters)
+                    .GroupBy(f => f.GetType())
+                    .Select(g => g.Last())
+                    .ToList();
+
                 var routeAttributes = method.GetCustomAttributes<RouteAttribute>(true);
                 foreach (var routeAttr in routeAttributes)
                 {
@@ -154,6 +166,12 @@ namespace WebFramework.Core
                         var provider = context.RequestServices ?? ServiceProvider;
                         var controllerInstance = provider.GetService(controllerType)
                             ?? throw new InvalidOperationException($"無法由 IoC 容器解析 Controller：{controllerType.FullName}");
+
+                        var stopwatch = Stopwatch.StartNew();
+                        foreach (var filter in actionFilters)
+                        {
+                            await filter.OnActionExecutingAsync(context, controllerType.Name, method.Name);
+                        }
 
                         var parameters = method.GetParameters();
                         var args = new object?[parameters.Length];
@@ -174,6 +192,16 @@ namespace WebFramework.Core
                         if (result is Task task)
                         {
                             await task;
+                        }
+
+                        stopwatch.Stop();
+                        for (int i = actionFilters.Count - 1; i >= 0; i--)
+                        {
+                            await actionFilters[i].OnActionExecutedAsync(
+                                context,
+                                controllerType.Name,
+                                method.Name,
+                                stopwatch.ElapsedMilliseconds);
                         }
                     });
                 }
