@@ -2,7 +2,11 @@
 
 ```mermaid
 classDiagram
-    {{CLASS_DIAGRAM_CONTENT}}
+    class {{CLASS_NAME}} {
+        <<{{CHANGE_STEREOTYPE}}>>
+        {{MEMBER_SIGNATURE}}
+    }
+    {{SOURCE_CLASS_NAME}} {{RELATION_ARROW}} {{TARGET_CLASS_NAME}} : {{RELATION_LABEL}}
 ```
 
 ## 設計說明
